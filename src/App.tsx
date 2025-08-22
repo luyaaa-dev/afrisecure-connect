@@ -23,7 +23,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/*" element={<Dashboard />} />
           <Route path="/offline" element={<Offline />} />
           <Route path="/ussd-simulator" element={<UssdSimulator />} />
           <Route path="/menu-balance" element={<MenuBalance />} />

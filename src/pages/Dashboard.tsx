@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import DashboardHome from "./dashboard/DashboardHome";
 import EmergencyShield from "./dashboard/EmergencyShield";
 import FraudDetection from "./dashboard/FraudDetection";
+import AntiScamCoach from "./dashboard/AntiScamCoach";
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -54,7 +55,7 @@ const Dashboard = () => {
               <Route path="/emergency-shield" element={<EmergencyShield />} />
               <Route path="/fraud-detection" element={<FraudDetection />} />
               <Route path="/credit-scoring" element={<div className="text-center py-20"><h2 className="text-2xl font-bold">Credit Scoring</h2><p className="text-muted-foreground">Coming soon...</p></div>} />
-              <Route path="/anti-scam" element={<div className="text-center py-20"><h2 className="text-2xl font-bold">Anti-Scam Coach</h2><p className="text-muted-foreground">Coming soon...</p></div>} />
+              <Route path="/anti-scam" element={<AntiScamCoach />} /> 
               <Route path="/savings" element={<div className="text-center py-20"><h2 className="text-2xl font-bold">Smart Savings</h2><p className="text-muted-foreground">Coming soon...</p></div>} />
               <Route path="/remittance" element={<div className="text-center py-20"><h2 className="text-2xl font-bold">Cross-Border Payments</h2><p className="text-muted-foreground">Coming soon...</p></div>} />
               <Route path="/safevault" element={<div className="text-center py-20"><h2 className="text-2xl font-bold">SafeVault</h2><p className="text-muted-foreground">Coming soon...</p></div>} />

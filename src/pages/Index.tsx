@@ -5,12 +5,63 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Shield, Fingerprint, Mic, Phone, Eye } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 import heroImage from "@/assets/hero-security.jpg";
+import professionalBg from "@/assets/professional-bg.jpg";
 
 const Index = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!phone || !password) {
+      toast({
+        title: "Missing Information",
+        description: "Please enter both phone/email and password",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    
+    // Simulate login process
+    setTimeout(() => {
+      toast({
+        title: "Login Successful!",
+        description: "Welcome to AfriSecure Finance",
+      });
+      navigate("/dashboard");
+      setIsLoading(false);
+    }, 1500);
+  };
+
+  const handleSignUp = () => {
+    if (!phone) {
+      toast({
+        title: "Phone/Email Required",
+        description: "Please enter your phone or email to sign up",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    toast({
+      title: "Sign Up Started!",
+      description: "Redirecting to registration...",
+    });
+    
+    // In a real app, this would navigate to sign up page
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 1000);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-primary/5">
@@ -18,8 +69,8 @@ const Index = () => {
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-hero opacity-90"></div>
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          className="absolute inset-0 bg-cover bg-center opacity-30"
+          style={{ backgroundImage: `url(${professionalBg})` }}
         ></div>
         
         <div className="relative container mx-auto px-6 py-16 text-center">
@@ -56,7 +107,7 @@ const Index = () => {
             
             <CardContent className="space-y-6">
               {/* Login Form */}
-              <div className="space-y-4">
+              <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone or Email</Label>
                   <Input
@@ -66,6 +117,7 @@ const Index = () => {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     className="h-12"
+                    required
                   />
                 </div>
                 
@@ -78,18 +130,31 @@ const Index = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="h-12"
+                    required
                   />
                 </div>
                 
                 <div className="space-y-3 pt-2">
-                  <Button variant="hero" size="lg" className="w-full h-12">
-                    Login
+                  <Button 
+                    type="submit" 
+                    variant="hero" 
+                    size="lg" 
+                    className="w-full h-12"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Logging in..." : "Login"}
                   </Button>
-                  <Button variant="outline" size="lg" className="w-full h-12">
+                  <Button 
+                    type="button"
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full h-12"
+                    onClick={handleSignUp}
+                  >
                     Sign Up
                   </Button>
                 </div>
-              </div>
+              </form>
 
               {/* Separator */}
               <div className="flex items-center gap-4 py-2">

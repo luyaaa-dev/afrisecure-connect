@@ -50,7 +50,7 @@ const Dashboard = () => {
         <AppSidebar />
 
         <main className="flex-1 pt-16">
-          <div className="container mx-auto px-6 py-8">
+          <div className="container mx-auto px-4 lg:px-6 py-6 lg:py-8 max-w-7xl">
             <Routes>
               <Route path="/" element={<DashboardHome />} />
               <Route path="/emergency-shield" element={<EmergencyShield />} />

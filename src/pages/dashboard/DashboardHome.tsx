@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { 
   Shield, 
   Brain, 
@@ -25,10 +28,12 @@ import { useToast } from "@/components/ui/use-toast";
 
 const DashboardHome = () => {
   const { toast } = useToast();
-  const [balance] = useState("R 2,450.75");
+  const [balance, setBalance] = useState("R 2,450.75");
   const [creditScore] = useState(742);
   const [securityScore] = useState(95);
   const [savingsGoal] = useState({ current: 420, target: 800, name: "New Fridge Fund" });
+  const [addMoneyAmount, setAddMoneyAmount] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
 
   const recentTransactions = [
     { id: 1, type: "Credit", amount: "R 150.00", description: "Salary Deposit", time: "Today 14:30" },
@@ -37,12 +42,40 @@ const DashboardHome = () => {
     { id: 4, type: "Debit", amount: "R 85.50", description: "Grocery Store", time: "Yesterday" },
   ];
 
-  const quickActions = [
-    { icon: Send, label: "Send Money", color: "text-primary", link: "/dashboard/remittance" },
-    { icon: Plus, label: "Add Money", color: "text-secondary", link: "/dashboard" },
-    { icon: Download, label: "Withdraw", color: "text-accent", link: "/dashboard" },
-    { icon: Shield, label: "Emergency Shield", color: "text-destructive", link: "/dashboard/emergency-shield" },
-  ];
+  const handleAddMoney = () => {
+    if (addMoneyAmount && parseFloat(addMoneyAmount) > 0) {
+      const currentBalance = parseFloat(balance.replace("R ", "").replace(",", ""));
+      const newBalance = currentBalance + parseFloat(addMoneyAmount);
+      setBalance(`R ${newBalance.toLocaleString()}`);
+      toast({
+        title: "Money Added Successfully",
+        description: `R ${addMoneyAmount} has been added to your account.`,
+      });
+      setAddMoneyAmount("");
+    }
+  };
+
+  const handleWithdraw = () => {
+    if (withdrawAmount && parseFloat(withdrawAmount) > 0) {
+      const currentBalance = parseFloat(balance.replace("R ", "").replace(",", ""));
+      const withdrawalAmount = parseFloat(withdrawAmount);
+      if (withdrawalAmount <= currentBalance) {
+        const newBalance = currentBalance - withdrawalAmount;
+        setBalance(`R ${newBalance.toLocaleString()}`);
+        toast({
+          title: "Withdrawal Successful",
+          description: `R ${withdrawAmount} has been withdrawn from your account.`,
+        });
+        setWithdrawAmount("");
+      } else {
+        toast({
+          title: "Insufficient Funds",
+          description: "You don't have enough balance for this withdrawal.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -110,14 +143,79 @@ const DashboardHome = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {quickActions.map((action, index) => (
-              <Link key={index} to={action.link}>
+            {/* Send Money */}
+            <Link to="/dashboard/remittance">
+              <Button variant="outline" className="w-full h-20 flex-col gap-2 hover:bg-muted/50">
+                <Send className="w-6 h-6 text-primary" />
+                <span className="text-sm">Send Money</span>
+              </Button>
+            </Link>
+
+            {/* Add Money */}
+            <Dialog>
+              <DialogTrigger asChild>
                 <Button variant="outline" className="w-full h-20 flex-col gap-2 hover:bg-muted/50">
-                  <action.icon className={`w-6 h-6 ${action.color}`} />
-                  <span className="text-sm">{action.label}</span>
+                  <Plus className="w-6 h-6 text-secondary" />
+                  <span className="text-sm">Add Money</span>
                 </Button>
-              </Link>
-            ))}
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Add Money to Wallet</DialogTitle>
+                  <DialogDescription>Enter the amount you want to add to your account.</DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="addAmount">Amount (R)</Label>
+                    <Input
+                      id="addAmount"
+                      type="number"
+                      placeholder="0.00"
+                      value={addMoneyAmount}
+                      onChange={(e) => setAddMoneyAmount(e.target.value)}
+                    />
+                  </div>
+                  <Button onClick={handleAddMoney} className="w-full">Add Money</Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+
+            {/* Withdraw */}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="w-full h-20 flex-col gap-2 hover:bg-muted/50">
+                  <Download className="w-6 h-6 text-accent" />
+                  <span className="text-sm">Withdraw</span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Withdraw Money</DialogTitle>
+                  <DialogDescription>Enter the amount you want to withdraw from your account.</DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="withdrawAmount">Amount (R)</Label>
+                    <Input
+                      id="withdrawAmount"
+                      type="number"
+                      placeholder="0.00"
+                      value={withdrawAmount}
+                      onChange={(e) => setWithdrawAmount(e.target.value)}
+                    />
+                  </div>
+                  <Button onClick={handleWithdraw} className="w-full">Withdraw</Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+
+            {/* Emergency Shield */}
+            <Link to="/dashboard/emergency-shield">
+              <Button variant="outline" className="w-full h-20 flex-col gap-2 hover:bg-muted/50">
+                <Shield className="w-6 h-6 text-destructive" />
+                <span className="text-sm">Emergency Shield</span>
+              </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>

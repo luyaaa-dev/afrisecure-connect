@@ -40,16 +40,18 @@ export function AppSidebar() {
 
   const isActive = (path: string) => currentPath === path;
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "bg-primary/10 text-primary font-medium border-r-2 border-primary" : "hover:bg-muted/50";
+    isActive ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium" : "hover:bg-sidebar-accent/50";
 
   return (
-    <Sidebar className={state === "collapsed" ? "w-14" : "w-64"} collapsible="icon">
-      <SidebarTrigger className="m-2 self-end" />
+    <Sidebar 
+      className={`${state === "collapsed" ? "w-16" : "w-72"} bg-sidebar border-sidebar-border`} 
+      collapsible="icon"
+    >
 
-      <SidebarContent className="bg-card">
+      <SidebarContent className="bg-sidebar">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-muted-foreground">
-            AfriSecure Finance
+          <SidebarGroupLabel className="text-sidebar-foreground font-bold text-lg px-4 py-4">
+            {state !== "collapsed" && "AfriSecure Finance"}
           </SidebarGroupLabel>
 
           <SidebarGroupContent>

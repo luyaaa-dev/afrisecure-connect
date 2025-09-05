@@ -9,6 +9,9 @@ import EmergencyShield from "./dashboard/EmergencyShield";
 import FraudDetection from "./dashboard/FraudDetection";
 import AntiScamCoach from "./dashboard/AntiScamCoach";
 import CreditScoring from "./dashboard/CreditScoring";
+import SavingsAssistant from "./dashboard/SavingsAssistant";
+import CrossBorderPayments from "./dashboard/CrossBorderPayments";
+import SafeVault from "./dashboard/SafeVault";
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -25,7 +28,7 @@ const Dashboard = () => {
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gradient-to-br from-background via-muted/30 to-primary/5">
         {/* Header */}
-        <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b z-50 h-16">
+        <header className="fixed top-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-b z-50 h-16">
           <div className="container mx-auto px-6 h-full flex items-center justify-between">
             <div className="flex items-center gap-3">
               <SidebarTrigger />
@@ -57,9 +60,9 @@ const Dashboard = () => {
               <Route path="/fraud-detection" element={<FraudDetection />} />
               <Route path="/credit-scoring" element={<CreditScoring />} />
               <Route path="/anti-scam" element={<AntiScamCoach />} /> 
-              <Route path="/savings" element={<div className="text-center py-20"><h2 className="text-2xl font-bold">Smart Savings</h2><p className="text-muted-foreground">Coming soon...</p></div>} />
-              <Route path="/remittance" element={<div className="text-center py-20"><h2 className="text-2xl font-bold">Cross-Border Payments</h2><p className="text-muted-foreground">Coming soon...</p></div>} />
-              <Route path="/safevault" element={<div className="text-center py-20"><h2 className="text-2xl font-bold">SafeVault</h2><p className="text-muted-foreground">Coming soon...</p></div>} />
+              <Route path="/savings" element={<SavingsAssistant />} />
+              <Route path="/remittance" element={<CrossBorderPayments />} />
+              <Route path="/safevault" element={<SafeVault />} />
             </Routes>
           </div>
         </main>
